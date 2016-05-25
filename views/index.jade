@@ -2,4 +2,35 @@ extends layout
 
 block content
   h1= title
-  p This is the #{title}
+  br
+
+  form(action="/completeenquiry", method="post")
+    table.table.table-striped.table-bordered
+      tr
+        td Type
+        td EnquiryDate
+        td Status
+        td StatusDate
+      if (typeof enquiries === "undefined")
+        tr
+          td
+      else
+        each enquiry in enquiries
+          tr
+            td #{enquiry.Type._}
+            td #{enquiry.EnquiryDate._}
+            - var day   = enquiry.Timestamp._.getDate();
+            - var month = enquiry.Timestamp._.getMonth() + 1;
+            - var year  = enquiry.Timestamp._.getFullYear();
+            td #{month + "/" + day + "/" + year}
+            //- td
+            //-              input(type="checkbox", name="#{enquiry.RowKey._}", value="#{!task.completed._}", checked=task.completed._)
+    button.btn(type="submit") Update Enquiries
+  hr
+  form.well(action="/addenquiry", method="post")
+    label Item Type:
+    input(name="item[Type]", type="textbox")
+    label Item Status:
+    input(name="item[Status]", type="textbox")
+    br
+    button.btn(type="submit") Add item

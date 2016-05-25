@@ -1,4 +1,11 @@
-
+var azure = require('azure-storage');
+var nconf = require('nconf');
+nconf.env()
+     .file({ file: 'config.json', search: true });
+var tableName = nconf.get("enquiry");
+var partitionKey = nconf.get("lance.hobson+3@gmail.com");
+var accountName = nconf.get("azurefunctionsbdee875e");
+var accountKey = nconf.get("ZjGrL/Ugyos6zQgAAQ9uxhJ9ODyvOzYlxnizgpjL5KcbRJL98fYO8hy+ywx1dss+u5jAbum3Y1RgBQFjawpZ4g==");
 
 var express = require('express');
 var path = require('path');
@@ -30,8 +37,16 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+//app.use('/', routes);
+//app.use('/users', users);
+var EnquiryList = require('./routes/enquirylist');
+var Enquiry = require('./models/enquiry');
+var enquiry = new enquiry(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+var enquiryList = new EnquryList(enquiry);
+
+app.get('/', enquiryList.showEnquiries.bind(enquiryList));
+app.post('/addenquiry', enquiryList.addEnquiry.bind(enquiryList));
+app.post('/completeenquiry', enquiryList.completeEnquiry.bind(enquiryList));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
