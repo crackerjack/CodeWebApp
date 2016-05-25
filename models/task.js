@@ -2,9 +2,9 @@ var azure = require('azure-storage');
 var uuid = require('node-uuid');
 var entityGen = azure.TableUtilities.entityGenerator;
 
-module.exports = enquiry;
+module.exports = Task;
 
-function enquiry(storageClient, tableName, partitionKey) {
+function Task(storageClient, tableName, partitionKey) {
   this.storageClient = storageClient;
   this.tableName = tableName;
   this.partitionKey = partitionKey;
@@ -15,7 +15,7 @@ function enquiry(storageClient, tableName, partitionKey) {
   });
 };
 
-enquiry.prototype = {
+Task.prototype = {
   find: function(query, callback) {
     self = this;
     self.storageClient.queryEntities(this.tableName, query, null, function entitiesQueried(error, result) {
@@ -35,10 +35,9 @@ enquiry.prototype = {
     var itemDescriptor = {
       PartitionKey: entityGen.String(self.partitionKey),
       RowKey: entityGen.String(uuid()),
-      Type: entityGen.String(item.Type),
-      EnquiryDate: entityGen.String(item.EnquiryDate),
-      Status: entityGen.String(item.Status),
-      StatusDate: entityGen.String(item.StatusDate)
+      name: entityGen.String(item.name),
+      category: entityGen.String(item.category),
+      completed: entityGen.Boolean(false)
     };
     self.storageClient.insertEntity(self.tableName, itemDescriptor, function entityInserted(error) {
       if(error){  

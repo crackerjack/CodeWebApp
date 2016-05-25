@@ -2,10 +2,10 @@ var azure = require('azure-storage');
 var nconf = require('nconf');
 nconf.env()
      .file({ file: 'config.json', search: true });
-var tableName = nconf.get("enquiry");
-var partitionKey = nconf.get("lance.hobson+3@gmail.com");
-var accountName = nconf.get("azurefunctionsbdee875e");
-var accountKey = nconf.get("ZjGrL/Ugyos6zQgAAQ9uxhJ9ODyvOzYlxnizgpjL5KcbRJL98fYO8hy+ywx1dss+u5jAbum3Y1RgBQFjawpZ4g==");
+var tableName = nconf.get("tasks");
+var partitionKey = nconf.get("task_1");
+var accountName = nconf.get("9mportalvhdsxhzx1d52jj5t");
+var accountKey = nconf.get("UdrXBeD62SRfzScNHSZr21iXQTdxSlJKD7Xh9AAVmqvo5rq8xIkVD//K8xDdAzFojPLFgeTPXa+JY5Z4JHW2cg==");
 
 var express = require('express');
 var path = require('path');
@@ -39,14 +39,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', routes);
 //app.use('/users', users);
-var EnquiryList = require('./routes/enquirylist');
-var Enquiry = require('./models/enquiry');
-var enquiry = new enquiry(azure.createTableService(accountName, accountKey), tableName, partitionKey);
-var enquiryList = new EnquryList(enquiry);
+var TaskList = require('./routes/tasklist');
+var Task = require('./models/task');
+var task = new Task(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+var taskList = new TaskList(task);
 
-app.get('/', enquiryList.showEnquiries.bind(enquiryList));
-app.post('/addenquiry', enquiryList.addEnquiry.bind(enquiryList));
-app.post('/completeenquiry', enquiryList.completeEnquiry.bind(enquiryList));
+app.get('/', taskList.showTasks.bind(taskList));
+app.post('/addtask', taskList.addTask.bind(taskList));
+app.post('/completetask', taskList.completeTask.bind(taskList));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,33 +4,33 @@ block content
   h1= title
   br
 
-  form(action="/completeenquiry", method="post")
+  form(action="/completetask", method="post")
     table.table.table-striped.table-bordered
       tr
-        td Type
-        td EnquiryDate
-        td Status
-        td StatusDate
-      if (typeof enquiries === "undefined")
+        td Name
+        td Category
+        td Date
+        td Complete
+      if (typeof tasks === "undefined")
         tr
           td
       else
-        each enquiry in enquiries
+        each task in tasks
           tr
-            td #{enquiry.Type._}
-            td #{enquiry.EnquiryDate._}
-            - var day   = enquiry.Timestamp._.getDate();
-            - var month = enquiry.Timestamp._.getMonth() + 1;
-            - var year  = enquiry.Timestamp._.getFullYear();
+            td #{task.name._}
+            td #{task.category._}
+            - var day   = task.Timestamp._.getDate();
+            - var month = task.Timestamp._.getMonth() + 1;
+            - var year  = task.Timestamp._.getFullYear();
             td #{month + "/" + day + "/" + year}
-            //- td
-            //-              input(type="checkbox", name="#{enquiry.RowKey._}", value="#{!task.completed._}", checked=task.completed._)
-    button.btn(type="submit") Update Enquiries
+            td
+              input(type="checkbox", name="#{task.RowKey._}", value="#{!task.completed._}", checked=task.completed._)
+    button.btn(type="submit") Update tasks
   hr
-  form.well(action="/addenquiry", method="post")
-    label Item Type:
-    input(name="item[Type]", type="textbox")
-    label Item Status:
-    input(name="item[Status]", type="textbox")
+  form.well(action="/addtask", method="post")
+    label Item Name:
+    input(name="item[name]", type="textbox")
+    label Item Category:
+    input(name="item[category]", type="textbox")
     br
     button.btn(type="submit") Add item
