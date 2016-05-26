@@ -13,7 +13,7 @@ TaskList.prototype = {
     var query = new azure.TableQuery()
       .where('completed eq ?', false);
     self.task.find(query, function itemsFound(error, items) {
-      res.render('index',{title: 'My ToDo List ', tasks: items});
+      res.render('index',{title: 'Azure ToDo List ', tasks: items});
     });
   },
 

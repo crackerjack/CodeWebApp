@@ -54,7 +54,7 @@ Task.prototype = {
         callback(error);
       }
       entity.completed._ = true;
-      self.storageClient.updateEntity(self.tableName, entity, function entityUpdated(error) {
+      self.storageClient.replaceEntity(self.tableName, entity, function entityUpdated(error) {
         if(error) {
           callback(error);
         }

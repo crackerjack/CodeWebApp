@@ -2,10 +2,10 @@ var azure = require('azure-storage');
 var nconf = require('nconf');
 nconf.env()
      .file({ file: 'config.json', search: true });
-var tableName = nconf.get("tasks");
-var partitionKey = nconf.get("task_1");
-var accountName = nconf.get("9mportalvhdsxhzx1d52jj5t");
-var accountKey = nconf.get("UdrXBeD62SRfzScNHSZr21iXQTdxSlJKD7Xh9AAVmqvo5rq8xIkVD//K8xDdAzFojPLFgeTPXa+JY5Z4JHW2cg==");
+var tableName = nconf.get("TABLE_NAME");
+var partitionKey = nconf.get("PARTITION_KEY");
+var accountName = nconf.get("STORAGE_NAME");
+var accountKey = nconf.get("STORAGE_KEY");
 
 var express = require('express');
 var path = require('path');
