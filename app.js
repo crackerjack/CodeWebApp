@@ -14,21 +14,22 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/user');
+//var routes = require('./routes/index');
+//var users = require('./routes/user');
 
 var app = express();
 
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
+app.locals.moment = require('moment');
 
 // view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// app.use(favicon(__dirname + '/public/img/favicon.ico'));
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -47,6 +48,16 @@ var taskList = new TaskList(task);
 app.get('/', taskList.showTasks.bind(taskList));
 app.post('/addtask', taskList.addTask.bind(taskList));
 app.post('/completetask', taskList.completeTask.bind(taskList));
+
+// Jobs
+var JobList = require('./routes/joblist');
+var Job = require('./models/job');
+var job = new Job(azure.createTableService(accountName, accountKey), "enquiry"); //, "lance.hobson@gmail.com+3");
+var jobList = new JobList(job);
+
+app.get('/job', jobList.showJobs.bind(jobList));
+//app.post('/addtask', taskList.addTask.bind(taskList));
+//app.post('/completetask', taskList.completeTask.bind(taskList));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

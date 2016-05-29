@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1= title
+  br
+
+  form(action="/responses", method="get")
+    table.table.table-striped.table-bordered
+      tr
+        td Job #
+        td Enquiry Date
+        td Status
+        td Status Date
+      if (typeof jobs === "undefined")
+        tr
+          td
+      else
+        each job in jobs
+          tr
+            td #{job.RowKey._.split('__')[0]}
+            td #{job.EnquiryDate._}
+            td #{job.Status._}
+            td #{moment(job.Timestamp._).format("YYYY/MM/DD")}
+            //- - var day   = job.Timestamp._.getDate();
+            //- - var month = job.Timestamp._.getMonth() + 1;
+            //- - var year  = job.Timestamp._.getFullYear();
+            //- td #{month + "/" + day + "/" + year}
+            //- td
+              input(type="checkbox", name="#{job.RowKey._}", value="#{!job.completed._}", checked=job.completed._)
