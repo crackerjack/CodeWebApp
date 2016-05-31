@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   br
-
+  p #{id}
   form(action="/responses", method="get")
     table.table.table-striped.table-bordered
       tr
@@ -18,7 +18,7 @@ block content
         each job in jobs
           tr
             td
-              a(href='/responses/' + job.RowKey._.split('__')[0]) #{job.RowKey._.split('__')[0]}
+              a(href='/response/' + job.RowKey._.split('__')[0]) #{job.RowKey._.split('__')[0]}
             td #{job.EnquiryDate._}
             td #{job.Status._}
             td #{moment(job.Timestamp._).format("YYYY/MM/DD")}

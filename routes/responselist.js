@@ -1,21 +1,19 @@
 var azure = require('azure-storage');
 //var async = require('async');
 
-module.exports = JobList;
+module.exports = ResponseList;
 
-function JobList(job) {
-  this.job = job;
+function ResponseList(response) {
+  this.response = response;
 }
 
-JobList.prototype = {
-  showJobs: function(req, res) {
+ResponseList.prototype = {
+  showResponses: function(req, res) {
     self = this;
     var query = new azure.TableQuery()
-        .where('PartitionKey == ? && Type == ?', req.user.userName, 'Job');
-      //.where('PartitionKey eq ?', 'lance.hobson+3@gmail.com');
-      //.where('Type eq ?', 'Job');
-    self.job.find(query, function itemsFound(error, items) {
-      res.render('jobs',{title: 'Enquiry List ', jobs: items, user: req.user, id: req.params.id});
+        .where('PartitionKey == ? && Type == ? && (RowKey > ? && RowKey <= ?)', req.user.userName, 'Response', req.params.id + '__000000000', req.params.id +'__999999999');
+    self.response.find(query, function itemsFound(error, items) {
+      res.render('responses',{title: 'Response List ', responses: items, user: req.user});
     });
   }//,
 

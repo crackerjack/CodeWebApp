@@ -1,3 +1,8 @@
+// At this stage, just one big hack-job
+// Much is based on https://github.com/rocketcoder/passportjs-AzureTableStorge
+// and this: https://azure.microsoft.com/en-us/documentation/articles/storage-nodejs-use-table-storage-web-site/
+// Needs some serious clean-up. In fact - a re-write. But the bits and pieces are here...
+
 var azure = require('azure-storage');
 var nconf = require('nconf');
 nconf.env()
@@ -72,10 +77,17 @@ app.use('/', routes(passport));
 // Jobs
 var JobList = require('./routes/joblist');
 var Job = require('./models/job');
-var job = new Job(azure.createTableService(accountName, accountKey), "enquiry"); //, "lance.hobson@gmail.com+3");
+var job = new Job(azure.createTableService(accountName, accountKey), "enquiry");
 var jobList = new JobList(job);
 
+// Responses
+var ResponseList = require('./routes/responselist');
+var Response = require('./models/response');
+var response = new Response(azure.createTableService(accountName, accountKey), "enquiry");
+var responseList = new ResponseList(response);
+
 app.get('/job', jobList.showJobs.bind(jobList));
+app.get('/response/:id', responseList.showResponses.bind(responseList));
 //app.post('/addtask', taskList.addTask.bind(taskList));
 //app.post('/completetask', taskList.completeTask.bind(taskList));
 

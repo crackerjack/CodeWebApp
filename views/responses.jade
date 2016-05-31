@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h1= title
+  br
+  p #{id}
+  form(action="/responses", method="get")
+    table.table.table-striped.table-bordered
+      tr
+        td Sequence #
+        td Authority Name
+        td Priority
+        td Status
+        td Status Date
+        td Attachment
+      if (typeof responses === "undefined")
+        tr
+          td
+      else
+        each response in responses
+          tr
+            td #{response.RowKey._.split('__')[1]}
+            td #{response.AuthorityName._}
+            td #{response.Priority._}
+            td #{response.Status._}
+            td #{moment(response.Timestamp._).format("YYYY/MM/DD")}
+            td
+              a(href='https://azurefunctionsbdee875e.blob.core.windows.net/8771762/436201515_registry.png') registry.png
+            //- - var day   = response.Timestamp._.getDate();
+            //- - var month = response.Timestamp._.getMonth() + 1;
+            //- - var year  = response.Timestamp._.getFullYear();
+            //- td #{month + "/" + day + "/" + year}
+            //- td
+              input(type="checkbox", name="#{response.RowKey._}", value="#{!response.completed._}", checked=response.completed._)
