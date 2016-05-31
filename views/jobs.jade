@@ -17,7 +17,8 @@ block content
       else
         each job in jobs
           tr
-            td #{job.RowKey._.split('__')[0]}
+            td
+              a(href='/responses/' + job.RowKey._.split('__')[0]) #{job.RowKey._.split('__')[0]}
             td #{job.EnquiryDate._}
             td #{job.Status._}
             td #{moment(job.Timestamp._).format("YYYY/MM/DD")}

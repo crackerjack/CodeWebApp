@@ -1,0 +1,15 @@
+if messages.errorMessage
+  div.alert.alert-danger(role="alert")
+    p #{messages.errorMessage}
+  
+if messages.warningMessage == ""
+  div.alert.alert-warning(role="alert")
+    p #{messages.warningMessage}
+  
+if messages.infoMessage == ""
+  div.alert.alert-info(role="alert")
+    p #{messages.infoMessage}
+  
+if messages.successMessage == ""
+  div.alert.alert-success(role="alert")
+    p #{messages.successMessage}

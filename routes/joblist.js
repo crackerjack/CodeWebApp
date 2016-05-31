@@ -1,5 +1,5 @@
 var azure = require('azure-storage');
-var async = require('async');
+//var async = require('async');
 
 module.exports = JobList;
 
@@ -11,11 +11,11 @@ JobList.prototype = {
   showJobs: function(req, res) {
     self = this;
     var query = new azure.TableQuery()
-        .where('PartitionKey == ? && Type == ?', req.query.id, 'Job');
+        .where('PartitionKey == ? && Type == ?', req.user.userName, 'Job');
       //.where('PartitionKey eq ?', 'lance.hobson+3@gmail.com');
       //.where('Type eq ?', 'Job');
     self.job.find(query, function itemsFound(error, items) {
-      res.render('jobs',{title: 'Job List ', jobs: items});
+      res.render('jobs',{title: 'Job List ', jobs: items, user: req.user});
     });
   }//,
 

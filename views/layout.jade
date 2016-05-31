@@ -7,5 +7,17 @@ html
   body.app
     nav.navbar.navbar-default
       div.navbar-header
-      a.navbar-brand(href='/') DBYD Prototype
+        a.navbar-brand(href='/') DBYD Prototype
+      div.collapse.navbar-collapse#bs-example-navbar-collapse-1 
+        if user
+          ul.nav.navbar-nav 
+            li 
+              a(href='/job') Enquiries
+            li 
+              a(href='/logout') Logout
+        if !user
+          ul.nav.navbar-nav
+            li
+              a(href='/login') Login
+
     block content

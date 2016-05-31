@@ -13,6 +13,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session'); 
+var flash = require('connect-flash'); 
+var passport = require('passport') 
+   , LocalStrategy = require('passport-local').Strategy; 
+var routes = require('./routes/index.js');
+var User = require('./userStorage.js');
 
 //var routes = require('./routes/index');
 //var users = require('./routes/user');
@@ -37,17 +43,31 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({   
+    secret: 'd1@lb4d1g', 
+    saveUninitialized: true, // (default: true) 
+    resave: true // (default: true)
+})); 
+app.use(flash()); 
+
+// Initialize Passport  
+app.use(passport.initialize()); 
+app.use(passport.session()); 
+var initPassport = require('./passport/init'); 
+initPassport(passport); 
+app.use('/', routes(passport)); 
+//app.use('/setup', setup); 
 
 //app.use('/', routes);
 //app.use('/users', users);
-var TaskList = require('./routes/tasklist');
-var Task = require('./models/task');
-var task = new Task(azure.createTableService(accountName, accountKey), tableName, partitionKey);
-var taskList = new TaskList(task);
+//var TaskList = require('./routes/tasklist');
+//var Task = require('./models/task');
+//var task = new Task(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+//var taskList = new TaskList(task);
 
-app.get('/', taskList.showTasks.bind(taskList));
-app.post('/addtask', taskList.addTask.bind(taskList));
-app.post('/completetask', taskList.completeTask.bind(taskList));
+//app.get('/', taskList.showTasks.bind(taskList));
+//app.post('/addtask', taskList.addTask.bind(taskList));
+//app.post('/completetask', taskList.completeTask.bind(taskList));
 
 // Jobs
 var JobList = require('./routes/joblist');
