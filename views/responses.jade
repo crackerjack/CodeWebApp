@@ -1,3 +1,4 @@
+//- Really should pass in all the variables here, not manipulate them in a View.
 extends layout
 
 block content
@@ -12,20 +13,31 @@ block content
         td Priority
         td Status
         td Status Date
-        td Attachment
+        td Attachment(s)
       if (typeof responses === "undefined")
         tr
           td
       else
         each response in responses
+          - var jobNo = response.RowKey._.split('__')[0]
+          - var seqNo = response.RowKey._.split('__')[1]
           tr
-            td #{response.RowKey._.split('__')[1]}
+            td #{seqNo}
             td #{response.AuthorityName._}
             td #{response.Priority._}
             td #{response.Status._}
             td #{moment(response.Timestamp._).format("YYYY/MM/DD")}
             td
-              a(href='https://azurefunctionsbdee875e.blob.core.windows.net/8771762/436201515_registry.png') registry.png
+              if (typeof response.Attachments === "undefined")
+                p None
+              else
+                ul              
+                  - var attachments = response.Attachments._.split(',')
+                  each attachment in attachments
+                    li
+                      //- var blobUri = 'https://9mportalvhdsxhzx1d52jj5t.blob.core.windows.net/' + jobNo + '/' + seqNo + '_' + attachment
+                      - var blobUri = 'https://azurefunctionsbdee875e.blob.core.windows.net/' + jobNo + '/' + seqNo + '_' + attachment
+                      a(href=blobUri) #{attachment}
             //- - var day   = response.Timestamp._.getDate();
             //- - var month = response.Timestamp._.getMonth() + 1;
             //- - var year  = response.Timestamp._.getFullYear();
