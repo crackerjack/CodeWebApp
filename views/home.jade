@@ -5,4 +5,15 @@ block content
   br
   if user
     p This is the #{title} Home page  
-    span Welcome #{user.firstName}!
+    br
+    div Welcome #[strong #{user.firstName}]!
+    br
+    div If this was a first-time login, the browser would re-direct to a Change Password page.
+    br
+    div There could be scope to have an Contacts page, with all contact details for current Members (per state), including:
+      ul
+        li Links to Websites
+        li Contact Addresses
+        li Phone Numbers
+        li Emergency Actions/Contacts     
+        

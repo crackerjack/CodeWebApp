@@ -15,6 +15,9 @@ html
               a(href='/job') Enquiries
             li 
               a(href='/logout') Logout
+          ul.nav.navbar-nav.navbar-right
+            li 
+              a(href="/") #{user.contact}
         if !user
           ul.nav.navbar-nav
             li

@@ -1,5 +1,9 @@
 var azure = require('azure-storage');
-//var async = require('async');
+var async = require('async');
+// Require once in project 
+//var asyncEachObject = require('async-each-object')
+// asyncEachObject function extends async 
+//async.eachObject();
 
 module.exports = ResponseList;
 
@@ -15,36 +19,31 @@ ResponseList.prototype = {
     self.response.find(query, function itemsFound(error, items) {
       res.render('responses',{title: 'Response List ', responses: items, user: req.user});
     });
-  }//,
+  },
 
-  // addJob: function(req,res) {
-  //   var self = this;
-  //   var item = req.body.item;
-  //   self.job.addItem(item, function itemAdded(error) {
-  //     if(error) {
-  //       throw error;
-  //     }
-  //     res.redirect('/');
-  //   });
-  // },
-
-  // completeJob: function(req,res) {
-  //   var self = this;
-  //   var completedJobs = Object.keys(req.body);
-  //   async.forEach(completedJobs, function jobIterator(completedTask, callback) {
-  //     self.job.updateItem(completedTask, function itemsUpdated(error) {
-  //       if(error){
-  //         callback(error);
-  //       } else {
-  //         callback(null);
-  //       }
-  //     });
-  //   }, function goHome(error){
-  //     if(error) {
-  //       throw error;
-  //     } else {
-  //      res.redirect('/');
-  //     }
-  //   });
-  // }
+  // Something very unwell about the way checkboxes are handled. For this demo, it is one-way:
+  // Check the box and it is set, now there is no going back. 
+  updateResponses: function(req,res) {
+    var self = this;
+    var updatedResponses = Object.keys(req.body);
+    //var updatedResponses = req.body;
+    async.forEach(updatedResponses, function responseIterator(updatedResponse, callback) {
+    //asyncEachObject(updatedResponses,  function responseIterator(updatedResponseValue, updatedResponseKey, callback) {
+      self.response.updateItem(req.user.userName, updatedResponse, function itemsUpdated(error) {
+        //self.response.updateItem(req.user.userName, updatedResponseKey, updatedResponseValue, function itemsUpdated(error) {
+        if(error){
+          callback(error);
+        } else {
+          callback(null);
+        }
+      });
+    }, function goHome(error){
+      if(error) {
+        throw error;
+      } else {
+       backURL=req.header('Referer') || '/job';
+       res.redirect(backURL);
+      }
+    });
+  }
 }

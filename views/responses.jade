@@ -5,12 +5,12 @@ block content
   h1= title
   br
   p #{id}
-  form(action="/responses", method="get")
+  form(action="/updateresponses", method="post")
     table.table.table-striped.table-bordered
       tr
         td Sequence #
         td Authority Name
-        td Priority
+        td High Priority
         td Status
         td Status Date
         td Attachment(s)
@@ -24,7 +24,8 @@ block content
           tr
             td #{seqNo}
             td #{response.AuthorityName._}
-            td #{response.Priority._}
+            td 
+              input(type="checkbox", name="#{response.RowKey._}", value="#{!response.Priority._}", checked=(response.Priority._==true) disabled=(response.Status._=="RECEIVED"))
             td #{response.Status._}
             td #{moment(response.Timestamp._).format("YYYY/MM/DD")}
             td
@@ -44,3 +45,4 @@ block content
             //- td #{month + "/" + day + "/" + year}
             //- td
               input(type="checkbox", name="#{response.RowKey._}", value="#{!response.completed._}", checked=response.completed._)
+    button.btn(type="submit") Update Responses

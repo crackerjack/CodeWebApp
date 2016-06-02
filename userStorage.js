@@ -53,6 +53,7 @@ User.toUser = function (userEntity) {
     user.password = userEntity.Password._;
     user.email = userEntity.RowKey._ + '@' + userEntity.PartitionKey._;
     user.firstName = userEntity.Contact._.split(' ')[0];
+    user.contact = userEntity.Contact._;
     //user.tenant = userEntity.tenant._;
     //user.validated = userEntity.validated._;
     return user;

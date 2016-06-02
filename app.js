@@ -88,8 +88,7 @@ var responseList = new ResponseList(response);
 
 app.get('/job', jobList.showJobs.bind(jobList));
 app.get('/response/:id', responseList.showResponses.bind(responseList));
-//app.post('/addtask', taskList.addTask.bind(taskList));
-//app.post('/completetask', taskList.completeTask.bind(taskList));
+app.post('/updateresponses', responseList.updateResponses.bind(responseList));
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

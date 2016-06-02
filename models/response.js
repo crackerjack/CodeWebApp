@@ -24,7 +24,7 @@ Response.prototype = {
         callback(null, result.entries);
       }
     });
-  } //,
+  },
 
   // addItem: function(item, callback) {
   //   self = this;
@@ -46,19 +46,27 @@ Response.prototype = {
   //   });
   // },
 
-  // updateItem: function(rKey, callback) {
-  //   self = this;
-  //   self.storageClient.retrieveEntity(self.tableName, self.partitionKey, rKey, function entityQueried(error, entity) {
-  //     if(error) {
-  //       callback(error);
-  //     }
-  //     entity.completed._ = true;
-  //     self.storageClient.replaceEntity(self.tableName, entity, function entityUpdated(error) {
-  //       if(error) {
-  //         callback(error);
-  //       }
-  //       callback(null);
-  //     });
-  //   });
-  // }
+  updateItem: function(pKey, rKey, callback) { //rVal
+    self = this;
+    // Get all the Responses, so we can compare against the Postback checkboxes
+    //var query = new azure.TableQuery()
+    //    .where('PartitionKey == ? && Type == ? && (RowKey > ? && RowKey <= ?)', req.user.userName, 'Response', req.params.id + '__000000000', req.params.id +'__999999999');
+    //self.find(query, function itemsFound(error, items) {
+    //});    
+    
+    //self.storageClient.retrieveEntity(self.tableName, self.partitionKey, rKey, function entityQueried(error, entity) {
+    self.storageClient.retrieveEntity(self.tableName, pKey, rKey, function entityQueried(error, entity) {
+      if(error) {
+        callback(error);
+      }
+      //console.log(rVal);
+      entity.Priority._ = true;
+      self.storageClient.replaceEntity(self.tableName, entity, function entityUpdated(error) {
+        if(error) {
+          callback(error);
+        }
+        callback(null);
+      });
+    });
+  }
 }
