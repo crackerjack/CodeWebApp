@@ -8,44 +8,44 @@ var q = require('q');
 // [TODO] Change this!
 var nconf = require('nconf');
 nconf.env()
-     .file({ file: 'config.json', search: true });
+    .file({ file: 'config.json', search: true });
 var accountName = nconf.get("STORAGE_NAME");
 var accountKey = nconf.get("STORAGE_KEY");
 
 function User() { }
-    
-User.UserFactory = function() {
+
+User.UserFactory = function () {
     var user = {
-        userName : "",
-        password : "",
+        userName: "",
+        password: "",
         //enabled : true,
-        email : "",
-        firstName : ""
+        email: "",
+        firstName: ""
         //tenant : "",
         //verified : false
     };
     user.isValidPassword = User.isValidPassword;
     return user;
 }
-    
+
 
 User.findOne = function (userName) {
     var tableService = azure.createTableService(accountName, accountKey);
-    var deferred = q.defer();    
+    var deferred = q.defer();
     tableService.retrieveEntity('user', userName.split('@')[1], userName.split('@')[0], function (err, result) {
         if (err) {
             if (err.statusCode === 404)
                 deferred.resolve(undefined);
             else
                 deferred.reject(err);
-        } 
+        }
         else {
-            deferred.resolve(User.toUser(result));                
+            deferred.resolve(User.toUser(result));
         }
     });
     return deferred.promise;
 }
- 
+
 User.toUser = function (userEntity) {
     var user = User.UserFactory();
     user.userName = userEntity.RowKey._ + '@' + userEntity.PartitionKey._;
@@ -58,7 +58,7 @@ User.toUser = function (userEntity) {
     //user.validated = userEntity.validated._;
     return user;
 };
-    
+
 User.toUserEntity = function (user) {
     return {
         PartitionKey: { '_': user.userName.split('@')[1] },
@@ -69,7 +69,7 @@ User.toUserEntity = function (user) {
         //validated: { '_': user.validated }
     };
 };
-    
+
 // User.createUser = function (user) {
 //     var deferred = q.defer();
 //     var tableService = azure.createTableService(config.storageAccountKey);
@@ -98,7 +98,7 @@ User.toUserEntity = function (user) {
 
 //     return deferred.promise;
 // }
-    
+
 // User.save = function (user) {
 //     var tableService = azure.createTableService(config.storageAccountKey);
 //     tableService.updateEntity('CloudUser', user, function (err, result) {
@@ -110,13 +110,13 @@ User.toUserEntity = function (user) {
 //         }
 //     });
 // }
-    
-User.isValidPassword = function (user, password) {  
+
+User.isValidPassword = function (user, password) {
     var crypto = require('crypto');
     var hash = crypto.createHmac('SHA256', "my$3cr3t").update(password).digest('base64');
     return hash == user.password
 }
-    
+
 //// Generates hash using bCrypt
 //User.createHash = function (password) {
 //    return bCrypt.hashSync(password);

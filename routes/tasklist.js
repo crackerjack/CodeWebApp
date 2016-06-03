@@ -8,42 +8,42 @@ function TaskList(task) {
 }
 
 TaskList.prototype = {
-  showTasks: function(req, res) {
+  showTasks: function (req, res) {
     self = this;
     var query = new azure.TableQuery()
       .where('completed eq ?', false);
     self.task.find(query, function itemsFound(error, items) {
-      res.render('index',{title: 'Azure ToDo List ', tasks: items});
+      res.render('index', { title: 'Azure ToDo List ', tasks: items });
     });
   },
 
-  addTask: function(req,res) {
+  addTask: function (req, res) {
     var self = this;
     var item = req.body.item;
     self.task.addItem(item, function itemAdded(error) {
-      if(error) {
+      if (error) {
         throw error;
       }
       res.redirect('/');
     });
   },
 
-  completeTask: function(req,res) {
+  completeTask: function (req, res) {
     var self = this;
     var completedTasks = Object.keys(req.body);
     async.forEach(completedTasks, function taskIterator(completedTask, callback) {
       self.task.updateItem(completedTask, function itemsUpdated(error) {
-        if(error){
+        if (error) {
           callback(error);
         } else {
           callback(null);
         }
       });
-    }, function goHome(error){
-      if(error) {
+    }, function goHome(error) {
+      if (error) {
         throw error;
       } else {
-       res.redirect('/');
+        res.redirect('/');
       }
     });
   }

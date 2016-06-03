@@ -40,11 +40,11 @@ function routeBuilder(passport) {
     //     });
     // });
     router.post('/login',
-    passport.authenticate('login', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    })
+        passport.authenticate('login', {
+            successRedirect: '/',
+            failureRedirect: '/login',
+            failureFlash: true
+        })
     );
     router.get('/login', function (req, res) {
         var messages = prepareFlashMessages(req);
@@ -65,9 +65,9 @@ function routeBuilder(passport) {
     //     //router.get('/job', jobList.showJobs.bind(jobList));
     //     jobList.showJobs.bind(jobList);
     // });
-    
 
-    
+
+
     // router.get('/signup', function (req, res) {
     //     var messages = prepareFlashMessages(req);
     //     res.render('signup.ejs', { messages: messages });

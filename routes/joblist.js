@@ -8,14 +8,14 @@ function JobList(job) {
 }
 
 JobList.prototype = {
-  showJobs: function(req, res) {
+  showJobs: function (req, res) {
     self = this;
     var query = new azure.TableQuery()
-        .where('PartitionKey == ? && Type == ?', req.user.userName, 'Job');
-      //.where('PartitionKey eq ?', 'lance.hobson+3@gmail.com');
-      //.where('Type eq ?', 'Job');
+      .where('PartitionKey == ? && Type == ?', req.user.userName, 'Job');
+    //.where('PartitionKey eq ?', 'lance.hobson+3@gmail.com');
+    //.where('Type eq ?', 'Job');
     self.job.find(query, function itemsFound(error, items) {
-      res.render('jobs',{title: 'Enquiry List ', jobs: items, user: req.user, id: req.params.id});
+      res.render('jobs', { title: 'Enquiry List ', jobs: items, user: req.user, id: req.params.id });
     });
   }//,
 

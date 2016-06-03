@@ -9,17 +9,17 @@ function Job(storageClient, tableName) { //, partitionKey) {
   this.tableName = tableName;
   //this.partitionKey = partitionKey;
   this.storageClient.createTableIfNotExists(tableName, function tableCreated(error) {
-    if(error) {
+    if (error) {
       throw error;
     }
   });
 };
 
 Job.prototype = {
-  find: function(query, callback) {
+  find: function (query, callback) {
     self = this;
     self.storageClient.queryEntities(this.tableName, query, null, function entitiesQueried(error, result) {
-      if(error) {
+      if (error) {
         callback(error);
       } else {
         callback(null, result.entries);
