@@ -26,7 +26,7 @@ block content
             td #{response.AuthorityName._}
             td 
               input(type="checkbox", name="#{response.RowKey._}", value="#{!response.Priority._}", checked=(response.Priority._==true) disabled=(response.Status._=="RECEIVED"))
-            td #{response.Status._}
+            td.#{response.Status._.toLowerCase()} #{response.Status._}
             td #{moment(response.Timestamp._).format("YYYY/MM/DD")}
             td
               if (typeof response.Attachments === "undefined")
