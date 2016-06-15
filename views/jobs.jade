@@ -17,7 +17,7 @@ block content
              | No Enquiries Found
       else
         each job in jobs
-        - var status = response.Status._.toLowerCase();
+          - var status = response.Status._.toLowerCase();
           tr
             td
               a(href='/response/' + job.RowKey._.split('__')[0]) #{job.RowKey._.split('__')[0]}
