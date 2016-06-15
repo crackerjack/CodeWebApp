@@ -21,7 +21,7 @@ block content
             td
               a(href='/response/' + job.RowKey._.split('__')[0]) #{job.RowKey._.split('__')[0]}
             td #{job.EnquiryDate._}
-            td.#{response.Status._.toLowerCase()} #{job.Status._}
+            td(class=response.Status._.toLowerCase()) #{job.Status._}
             td #{moment(job.Timestamp._).format("YYYY/MM/DD")}
             //- - var day   = job.Timestamp._.getDate();
             //- - var month = job.Timestamp._.getMonth() + 1;
